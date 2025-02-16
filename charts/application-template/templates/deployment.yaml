@@ -26,10 +26,29 @@ spec:
           env:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+          {{- if and .Values.externalSecrets.enabled .Values.externalSecrets.mountAsEnv }}
+          envFrom:
+            - secretRef:
+                name: {{ .Release.Name }}-secrets
+          {{- end }}
+          {{- if and .Values.externalSecrets.enabled .Values.externalSecrets.mountAsFile }}
+          volumeMounts:
+            {{- range .Values.externalSecrets.parameters }}
+            - name: secrets-volume
+              mountPath: {{ .mountPath }}
+              subPath: {{ .key }}
+            {{- end }}
+          {{- end }}
           {{- with .Values.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+      {{- if and .Values.externalSecrets.enabled .Values.externalSecrets.mountAsFile }}
+      volumes:
+        - name: secrets-volume
+          secret:
+            secretName: {{ .Release.Name }}-secrets
+      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
