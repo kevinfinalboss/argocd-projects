@@ -1,0 +1,83 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: voidbot
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: "https://github.com/kevinfinalboss/argocd-projects.git"
+    targetRevision: HEAD
+    path: "charts/application-template"
+    helm:
+      values: |-
+        replicaCount: 1
+
+        image:
+          repository: docker.io/kevinfinalboss/voidbot
+          tag: v1.0.0
+          pullPolicy: IfNotPresent
+
+        containerPort: 8080
+
+        service:
+          type: ClusterIP
+          port: 8080
+
+        env:
+          - name: APP_NAME
+            value: "void"
+
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "250m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+
+        volumes:
+          - name: logs
+            emptyDir: {}
+          - name: events
+            emptyDir: {}
+          - name: commands
+            emptyDir: {}
+          - name: internal
+            emptyDir: {}
+          - name: api
+            emptyDir: {}
+          - name: config
+            emptyDir: {}
+          - name: scripts
+            emptyDir: {}
+
+        volumeMounts:
+          - name: logs
+            mountPath: /app/logs
+          - name: events
+            mountPath: /app/events
+          - name: commands
+            mountPath: /app/commands
+          - name: internal
+            mountPath: /app/internal
+          - name: api
+            mountPath: /app/api
+          - name: config
+            mountPath: /app/config
+          - name: scripts
+            mountPath: /app/scripts
+
+        nodeSelector: {}
+        tolerations: []
+        affinity: {}
+
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: bot
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true
