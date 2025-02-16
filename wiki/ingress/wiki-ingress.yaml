@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: appname-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-dns"
+    external-dns.alpha.kubernetes.io/hostname: "appname.kevindev.com.br"
+spec:
+  tls:
+  - hosts:
+    - appname.kevindev.com.br
+    secretName: appname-tls
+  rules:
+  - host: appname.kevindev.com.br
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: appname-service
+            port:
+              number: 80
