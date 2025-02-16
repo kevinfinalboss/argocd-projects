@@ -68,7 +68,7 @@ spec:
             cpu: 500m
 
         externalSecrets:
-          enabled: true
+          enabled: false
           mountAsFile: true
           mountAsEnv: false
           parameters:
