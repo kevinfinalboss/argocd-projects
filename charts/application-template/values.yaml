@@ -11,12 +11,65 @@ service:
   type: ClusterIP
   port: 80
   nodePort: null
+replicaCount: 1
 
-env: []
-# - name: VARIABLE
-#   value: "value"
+image:
+  repository: nginx
+  tag: latest
+  pullPolicy: IfNotPresent
 
-resources: {}
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  name: ""
+  annotations: {}
+
+containerPort: 80
+
+service:
+  type: ClusterIP
+  port: 80
+  nodePort: null
+
+ingress:
+  enabled: false
+  className: nginx
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+persistence:
+  enabled: false
+  storageClass: ""
+  accessMode: ReadWriteOnce
+  size: 1Gi
+  annotations: {}
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
 nodeSelector: {}
 tolerations: []
 affinity: {}
+
+env: []
+  # - name: ENV_NAME
+  #   value: env_value
+
+---
