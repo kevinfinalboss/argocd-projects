@@ -16,7 +16,7 @@ spec:
         replicaCount: 1
         
         image:
-          repository: docker.io/kevinfinalboss/voidbot
+          repository: docker.io/kevinfinalboss/voidgo
           tag: v1.0.0
           pullPolicy: Always
         
@@ -32,7 +32,7 @@ spec:
         
         persistence:
           enabled: true
-          storageClass: ""
+          storageClass: "local-path"
           accessMode: ReadWriteOnce
           size: 1Gi
           annotations: {}
@@ -90,25 +90,25 @@ spec:
         volumes:
           - name: logs
             persistentVolumeClaim:
-              claimName: voidgo-data
+              claimName: voidbot-data
           - name: events
             persistentVolumeClaim:
-              claimName: voidgo-data
+              claimName: voidbot-data
           - name: commands
             persistentVolumeClaim:
-              claimName: voidgo-data
+              claimName: voidbot-data
           - name: internal
             persistentVolumeClaim:
-              claimName: voidgo-data
+              claimName: voidbot-data
           - name: api
             persistentVolumeClaim:
-              claimName: voidgo-data
+              claimName: voidbot-data
           - name: config
             persistentVolumeClaim:
-              claimName: voidgo-data
+              claimName: voidbot-data
           - name: scripts
             persistentVolumeClaim:
-              claimName: voidgo-data
+              claimName: voidbot-data
         
         volumeMounts:
           - name: logs
@@ -146,6 +146,6 @@ spec:
   syncPolicy:
     automated:
       prune: true
-      selfHeal: false
+      selfHeal: true
     syncOptions:
       - CreateNamespace=true
