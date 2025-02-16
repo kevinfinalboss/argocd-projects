@@ -1,21 +1,20 @@
 replicaCount: 1
 
 image:
-  repository: <seu-registro>/aurora
+  repository: ""
   tag: "latest"
   pullPolicy: IfNotPresent
+
+containerPort: 80
 
 service:
   type: ClusterIP
   port: 80
+  nodePort: null
 
-ingress:
-  enabled: false
-  hostname: ""
-  annotations: {}
-  path: /
-  pathType: Prefix
-  tls: false
+env: []
+# - name: VARIABLE
+#   value: "value"
 
 resources: {}
 nodeSelector: {}

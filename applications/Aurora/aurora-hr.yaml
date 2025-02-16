@@ -18,20 +18,32 @@ spec:
           tag: v1.0.0
           pullPolicy: IfNotPresent
 
+        containerPort: 80  # Adicionado explicitamente
+
         service:
           type: ClusterIP
           port: 80
 
-        ingress:
-          enabled: false
+        env:  # Adicionado para configurações específicas do Aurora
+          - name: APP_NAME
+            value: "aurora"
+          # Adicione outras variáveis de ambiente necessárias
 
-        resources: {}
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+
         nodeSelector: {}
-        tolerations: {}
+        tolerations: []
         affinity: {}
+
   destination:
     server: "https://kubernetes.default.svc"
-    namespace: BOT
+    namespace: bot
   syncPolicy:
     automated:
       prune: true
