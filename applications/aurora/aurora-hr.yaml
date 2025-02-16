@@ -46,7 +46,7 @@ spec:
         
         persistence:
           enabled: true
-          storageClass: ""
+          storageClass: "longhorn"
           accessMode: ReadWriteOnce
           size: 2Gi
           annotations: {}
