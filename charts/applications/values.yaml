@@ -1,0 +1,23 @@
+replicaCount: 1
+
+image:
+  repository: <seu-registro>/aurora
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  hostname: ""
+  annotations: {}
+  path: /
+  pathType: Prefix
+  tls: false
+
+resources: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
