@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: voidbot
+  name: void
   namespace: argocd
 spec:
   project: default
@@ -24,49 +24,31 @@ spec:
           type: ClusterIP
           port: 8080
 
-        env:
-          - name: APP_NAME
-            value: "void"
-
+        # Reduzindo os recursos
         resources:
           requests:
-            memory: "128Mi"
-            cpu: "250m"
+            memory: "64Mi"
+            cpu: "100m"
           limits:
-            memory: "256Mi"
-            cpu: "500m"
+            memory: "128Mi"
+            cpu: "200m"
 
         volumes:
-          - name: logs
-            emptyDir: {}
-          - name: events
-            emptyDir: {}
-          - name: commands
-            emptyDir: {}
-          - name: internal
-            emptyDir: {}
-          - name: api
-            emptyDir: {}
-          - name: config
-            emptyDir: {}
-          - name: scripts
+          - name: app-storage
             emptyDir: {}
 
         volumeMounts:
-          - name: logs
-            mountPath: /app/logs
-          - name: events
-            mountPath: /app/events
-          - name: commands
-            mountPath: /app/commands
-          - name: internal
-            mountPath: /app/internal
-          - name: api
-            mountPath: /app/api
-          - name: config
-            mountPath: /app/config
-          - name: scripts
-            mountPath: /app/scripts
+          - name: app-storage
+            mountPath: /app
+            subPath: ""
+
+        initContainers:
+          - name: init-dirs
+            image: busybox
+            command: ['sh', '-c', 'mkdir -p /app/logs /app/events /app/commands /app/internal /app/api /app/config /app/scripts']
+            volumeMounts:
+              - name: app-storage
+                mountPath: /app
 
         nodeSelector: {}
         tolerations: []
