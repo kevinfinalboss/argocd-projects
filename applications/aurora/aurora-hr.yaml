@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: "https://github.com/kevinfinalboss/argocd-projects.git"
     targetRevision: HEAD
-    path: "charts/applications"
+    path: "charts/application-template"
     helm:
       values: |-
         replicaCount: 1
