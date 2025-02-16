@@ -53,10 +53,10 @@ spec:
         
         resources:
           limits:
-            cpu: 100m
-            memory: 256Mi
+            cpu: 500m
+            memory: 512m
           requests:
-            cpu: 100m
+            cpu: 500m
             memory: 256Mi
         
         nodeSelector: {}
