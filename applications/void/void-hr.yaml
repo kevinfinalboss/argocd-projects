@@ -51,7 +51,7 @@ spec:
           mountAsEnv: false
           parameters:
             - name: config
-              path: /eks/bot/voidgo/config
+              path: /eks/bot/voidbot/config
               key: config.yaml
               mountPath: /app/config.yaml
         
