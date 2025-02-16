@@ -12,7 +12,7 @@ spec:
           - path: "applications/*"
   template:
     metadata:
-      name: '{{ toLower (path.basename) }}'
+      name: "{{path.basename}}"
     spec:
       project: default
       source:
@@ -23,8 +23,6 @@ spec:
         server: "https://kubernetes.default.svc"
         namespace: default
       syncPolicy:
-        syncOptions:
-          - CreateNamespace=true
         automated:
           prune: true
           selfHeal: true
