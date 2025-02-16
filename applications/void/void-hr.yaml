@@ -54,6 +54,61 @@ spec:
               path: /eks/bot/voidbot/config
               key: config.yaml
               mountPath: /app/config.yaml
+
+        initContainers:
+          - name: init-dirs
+            image: busybox:1.35
+            command:
+              - sh
+              - -c
+              - |
+                mkdir -p /app/logs /app/events /app/commands /app/internal /app/api /app/config /app/scripts &&
+                chmod -R 777 /app
+            volumeMounts:
+              - name: logs
+                mountPath: /app/logs
+                subPath: logs
+              - name: events
+                mountPath: /app/events
+                subPath: events
+              - name: commands
+                mountPath: /app/commands
+                subPath: commands
+              - name: internal
+                mountPath: /app/internal
+                subPath: internal
+              - name: api
+                mountPath: /app/api
+                subPath: api
+              - name: config
+                mountPath: /app/config
+                subPath: config
+              - name: scripts
+                mountPath: /app/scripts
+                subPath: scripts
+
+        volumes:
+          - name: logs
+            persistentVolumeClaim:
+              claimName: voidgo-data
+          - name: events
+            persistentVolumeClaim:
+              claimName: voidgo-data
+          - name: commands
+            persistentVolumeClaim:
+              claimName: voidgo-data
+          - name: internal
+            persistentVolumeClaim:
+              claimName: voidgo-data
+          - name: api
+            persistentVolumeClaim:
+              claimName: voidgo-data
+          - name: config
+            persistentVolumeClaim:
+              claimName: voidgo-data
+          - name: scripts
+            persistentVolumeClaim:
+              claimName: voidgo-data
         
         volumeMounts:
           - name: logs
