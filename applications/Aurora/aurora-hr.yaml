@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: aurorabot
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: "https://github.com/kevinfinalboss/argocd-projects.git"
+    targetRevision: HEAD
+    path: "charts/applications"
+    helm:
+      values: |-
+        replicaCount: 1
+
+        image:
+          repository: docker.io/kevinfinalboss/aurorabot
+          tag: v1.0.0
+          pullPolicy: IfNotPresent
+
+        service:
+          type: ClusterIP
+          port: 80
+
+        ingress:
+          enabled: false
+
+        resources: {}
+        nodeSelector: {}
+        tolerations: {}
+        affinity: {}
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: BOT
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
