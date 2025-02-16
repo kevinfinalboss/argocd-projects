@@ -24,10 +24,9 @@ spec:
           type: ClusterIP
           port: 80
 
-        env:  # Adicionado para configurações específicas do Aurora
+        env:  
           - name: APP_NAME
             value: "aurora"
-          # Adicione outras variáveis de ambiente necessárias
 
         resources:
           requests:
@@ -45,6 +44,8 @@ spec:
     server: "https://kubernetes.default.svc"
     namespace: bot
   syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
     automated:
       prune: true
       selfHeal: true
