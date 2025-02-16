@@ -77,39 +77,6 @@ spec:
               key: application.yml
               mountPath: /opt/lavalink/application.yml
 
-        volumes:
-          - name: logs
-            persistentVolumeClaim:
-              claimName: lavalink-data
-          - name: plugins
-            persistentVolumeClaim:
-              claimName: lavalink-data
-        
-        volumeMounts:
-          - name: logs
-            mountPath: /opt/lavalink/logs
-            subPath: logs
-          - name: plugins
-            mountPath: /opt/lavalink/plugins
-            subPath: plugins
-
-        initContainers:
-          - name: init-dirs
-            image: busybox:1.35
-            command:
-              - sh
-              - -c
-              - |
-                mkdir -p /opt/lavalink/logs /opt/lavalink/plugins &&
-                chmod -R 777 /opt/lavalink
-            volumeMounts:
-              - name: logs
-                mountPath: /opt/lavalink/logs
-                subPath: logs
-              - name: plugins
-                mountPath: /opt/lavalink/plugins
-                subPath: plugins
-
         env:
           - name: SERVER_PORT
             value: "2333"
