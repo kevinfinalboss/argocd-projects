@@ -12,16 +12,16 @@ spec:
           - path: "applications/*"
   template:
     metadata:
-      name: '{{- replace "/" "-" .path.basename | lower -}}'
+      name: "app-{{- path.basename | lower -}}"
     spec:
       project: default
       source:
         repoURL: "https://github.com/kevinfinalboss/argocd-projects.git"
         targetRevision: HEAD
-        path: "{{ .path }}"
+        path: "{{path}}"
       destination:
         server: "https://kubernetes.default.svc"
-        namespace: '{{- replace "/" "-" .path.basename | lower -}}'
+        namespace: default
       syncPolicy:
         automated:
           prune: true
